@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Logo from "./../images/DocTime.png"
 import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
-import { setLogout } from '../state/slices/docSlice';
+import { setLogout } from '../state/slices/initialSlice';
 import { toast } from 'react-toastify';
 
 
@@ -17,7 +17,7 @@ const Navbar = () => {
        try {
         const res = await axios({
             method:'GET',
-            url: 'http://localhost:3001/docAuth/logout',
+            url: 'http://localhost:3000/logout',
             withCredentials: true
         })
         if(res.data.status === "success"){
@@ -38,7 +38,7 @@ const Navbar = () => {
         <div className="flex-1">
             <Link to="/home" className="btn btn-ghost normal-case text-xl">
                 <img src={Logo} alt="" className="h-8 w-auto" />
-                <p className='text-3xl ml-2 text-white font-normal'>DocTime</p>
+                <p className='text-3xl ml-2 text-white font-normal'>Neural Ninjas</p>
             </Link>
         </div>
 
@@ -46,10 +46,7 @@ const Navbar = () => {
             <div className="flex-none">
                 <ul className="flex flex-row justify-between px-1 mr-5 text-white">
                 <li className="flex flex-row gap-28">
-                    <Link to='/mySlots'>My Slots</Link>
-                    <Link to='/myAppointments'>My Appointments</Link>
-                    <Link to='/profile'>Profile</Link>
-                    <button onClick={handleLogout}>Logout </button>
+                    <button onClick={handleLogout}>Logout</button>
                 </li>
                 </ul>
              </div>

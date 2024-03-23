@@ -2,7 +2,7 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import localStorage from "redux-persist/es/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
-import docReducer from "./slices/docSlice.js";
+import iniReducer from "./slices/initialSlice.js";
 
 const persistConfig = {
   key: "root",
@@ -11,7 +11,7 @@ const persistConfig = {
 };
 
 const reducer = combineReducers({
-  doc: docReducer,
+  doc: iniReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

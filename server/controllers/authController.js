@@ -1,5 +1,4 @@
-import Patient from "../models/patient.js";
-import Doctor from "../models/doctor.js";
+import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
@@ -33,71 +32,6 @@ export const createSendToken = (user, statusCode, req, res) => {
   });
 };
 
-// REGISTERING A DOCTOR
-export const registerDoctor = async (req, res) => {
-  try {
-    const {
-      username,
-      email,
-      password,
-      location,
-      expertise,
-      fees,
-      phoneNumber,
-    } = req.body;
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    const newUser = await Doctor({
-      username,
-      email,
-      password: passwordHash,
-      location,
-      expertise,
-      consultationFees: fees,
-      phoneNumber,
-    });
-
-    const savedUser = await newUser.save();
-
-    createSendToken(savedUser, 200, req, res);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ status: "failure", error: err.message });
-  }
-};
-
-// LOGGING IN A DOCTOR
-export const doctorLogin = async (req, res) => {
-  try {
-    const email = req.body.email;
-    const password = req.body.password;
-
-    if (!email || !password) {
-      return res.status(400).json({ msg: "Enter data..." });
-    }
-
-    const user = await Doctor.findOne({ email }).select("+password");
-
-    if (!user) {
-      return res.status(400).json({ msg: "User not found..." });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: "Invalid credentials..." });
-    }
-
-    createSendToken(user, 200, req, res);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      status: "failure",
-      message: err.message,
-    });
-  }
-};
-
 // LOGGING OUT A USER
 export const logout = (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, secure: true, sameSite: "None" });
@@ -107,7 +41,7 @@ export const logout = (req, res) => {
 };
 
 // CHECKING IF A DOCTOR IS LOGGED IN
-export const protect = async (req, res, next) => {
+export const protect = async (req, res) => {
   try {
     let token;
     if (
@@ -128,41 +62,30 @@ export const protect = async (req, res, next) => {
       process.env.JWT_TOKEN_SECRET
     );
 
-    let user = await Doctor.findById(decoded.id);
-    if (!user) {
-      user = await Patient.findById(decoded.id);
-    }
+    let user = await User.findById(decoded.id);
 
     if (!user) {
       return res.status(401).json({ status: "failed", msg: "Unauthorized" });
     }
 
-    next();
+    return res.status(200).json({ status: "success", msg: "Authorized" });
   } catch (err) {
     res.status(401).json({ status: "failed", msg: "Unauthorized" });
   }
 };
 
-// HELPER FUNCTION TO TEST PROTECT MIDDLEWARE
-export const sample = (req, res) => {
-  res.status(201).json({
-    msg: "success",
-  });
-};
-
-// REGISTERING A PATIENT
-export const registerPatient = async (req, res) => {
+// REGISTERING A USER
+export const register = async (req, res) => {
   try {
-    const { username, email, password, phoneNumber } = req.body;
+    const { username, email, password } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const newUser = await Patient({
+    const newUser = await User({
       username,
       email,
       password: passwordHash,
-      phoneNumber,
     });
 
     const savedUser = await newUser.save();
@@ -174,8 +97,8 @@ export const registerPatient = async (req, res) => {
   }
 };
 
-// LOGGING IN A PATIENT
-export const patientLogin = async (req, res) => {
+// LOGGING IN A USER
+export const login = async (req, res) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
@@ -184,7 +107,7 @@ export const patientLogin = async (req, res) => {
       return res.status(400).json({ msg: "Enter data..." });
     }
 
-    const user = await Patient.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(400).json({ msg: "User not found..." });

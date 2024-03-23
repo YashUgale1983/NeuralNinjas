@@ -6,7 +6,7 @@ import axios from "axios";
 import { useDispatch} from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SiAccenture } from "react-icons/si";
-import { setLogin, setSlots } from "../state/slices/docSlice";
+import { setLogin} from "../state/slices/initialSlice";
 
 
 const initialValues = {
@@ -29,26 +29,18 @@ const Loginpage = ()=>{
             try{
                 const res = await axios({
                     method: "POST",
-                    url: "http://localhost:3001/docAuth/login",
+                    url: "http://localhost:3000/login",
                     data: {
                       email,
                       password
                     },
                     withCredentials: true,
                   });
-                const mySlots = await axios({
-                    method: "POST",
-                    url: "http://localhost:3001/doctor/mySlots",
-                    data:{
-                        doctorId: res.data.data.user._id,
-                    },
-                    withCredentials: true,
-                })
-                if(res.data.status === "success" && mySlots.data.success){
+            
+                if(res.data.status === "success" ){
                     toast.success("Logging you in...");
                     setTimeout(() => {
                         navigate("/home");
-                        dispatch(setSlots({ mySlots: mySlots.data.data }));
                         dispatch(setLogin({user: res.data.data.user}));
                       }, 2000);
                 }
@@ -64,7 +56,7 @@ const Loginpage = ()=>{
         
         <Link to='/home' className='flex flex-row p-5 items-center justify-center space-x-3 bg-blue-900'>
             <img src={Logo} alt="DocTime Logo" className="h-8"/>
-            <h1 className="text-3xl text-white">DocTime</h1>
+            <h1 className="text-3xl text-white">Neural Ninjas</h1>
         </Link>
         <div className="w-3/4 md:w-1/3 my-20 mx-auto bg-white p-10 rounded-2xl text-black">
             <div className="text-3xl mb-10 ">Login</div>
