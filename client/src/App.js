@@ -8,6 +8,7 @@ import Homepage from "./scenes/homepage";
 // import MyAppointments from "./scenes/myAppointments";
 // import Profile from "./scenes/profile";
 import Signuppage from "./scenes/signuppage";
+import Documentation from "./scenes/documentation";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Loginpage />} />
           <Route path="/signup" element={<Signuppage />} />
           <Route path="/home" element={<Homepage />} />
+          <Route path="/documentation" element={<Documentation />} />
           {/* <Route path="/mySlots" element={<MySlots />} /> */}
           {/* <Route path="/myAppointments" element={<MyAppointments />} /> */}
           {/* <Route path="/profile" element={<Profile />} /> */}

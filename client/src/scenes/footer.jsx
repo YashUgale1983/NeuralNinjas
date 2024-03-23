@@ -6,7 +6,7 @@ const Footer = ()=>{
         <>
            <footer className="footer footer-center p-10 bg-base-300 text-base-content text-xl">
                 <aside>
-                    <p>Copyright © 2023 - All rights reserved by DocTime Pvt Ltd.</p>
+                    <p>Copyright © 2023 - All rights reserved by Neural Ninjas Pvt Ltd.</p>
                 </aside>
             </footer>
         </>

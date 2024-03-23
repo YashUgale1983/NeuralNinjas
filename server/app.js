@@ -12,12 +12,12 @@ import authRouter from "./routes/authRoutes.js";
 const app = express();
 
 /* CONFIGURATIONS */
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.json({ limit: "50mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+// app.use(bodyParser.json({ limit: "50mb", extended: true }));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
     // origin: ["http://192.168.0.106:3000", "http://localhost:3000"],

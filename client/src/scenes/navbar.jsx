@@ -46,6 +46,8 @@ const Navbar = () => {
             <div className="flex-none">
                 <ul className="flex flex-row justify-between px-1 mr-5 text-white">
                 <li className="flex flex-row gap-28">
+                    <button><Link to="/home">Home</Link></button>
+                    <button><Link to="/documentation">Documentation</Link></button>
                     <button onClick={handleLogout}>Logout</button>
                 </li>
                 </ul>

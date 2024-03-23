@@ -41,7 +41,7 @@ export const logout = (req, res) => {
 };
 
 // CHECKING IF A DOCTOR IS LOGGED IN
-export const protect = async (req, res) => {
+export const protect = async (req, res, next) => {
   try {
     let token;
     if (
@@ -68,7 +68,8 @@ export const protect = async (req, res) => {
       return res.status(401).json({ status: "failed", msg: "Unauthorized" });
     }
 
-    return res.status(200).json({ status: "success", msg: "Authorized" });
+    // return res.status(200).json({ status: "success", msg: "Authorized" });
+    next();
   } catch (err) {
     res.status(401).json({ status: "failed", msg: "Unauthorized" });
   }
@@ -125,5 +126,18 @@ export const login = async (req, res) => {
       status: "failure",
       message: err.message,
     });
+  }
+};
+
+export const uploadFile = async (req, res) => {
+  try {
+    console.log(req.body);
+    console.log(req.file);
+    res.status(200).json({
+      status: "success",
+      message: "file uploaded successfully",
+    });
+  } catch (err) {
+    console.log(err);
   }
 };
